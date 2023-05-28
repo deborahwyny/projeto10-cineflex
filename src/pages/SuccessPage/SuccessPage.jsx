@@ -3,40 +3,52 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
-export default function SuccessPage() {
+export default function SuccessPage({ username, movie, date, cpf, movieTitle, ids, sessoa,days }) {
+  const { idSessao } = useParams();
+  console.log(username);
+  console.log(ids)
+
+
+  // const { state } = useLocation();
+  // const { filmes, dadosReserva } = state;
+
+
   return (
     <PageContainer>
       <h1>
         Pedido feito <br /> com sucesso!
       </h1>
 
-      <TextContainer>
+      <TextContainer data-test="movie-info">
         <strong>
           <p>Filme e sessão</p>
         </strong>
-        <p>Tudo em todo lugar ao mesmo tempo</p>
-        <p>03/03/2023 - 14:00</p>
+        <p>{movieTitle}</p>
+        <p>{date}</p>
       </TextContainer>
 
-      <TextContainer>
+      <TextContainer data-test="seats-info">
         <strong>
           <p>Ingressos</p>
         </strong>
-        <p>Assento 01</p>
-        <p>Assento 02</p>
-        <p>Assento 03</p>
+        {ids.map((id) => (
+  <p key={id}>{id}</p>
+))}
+        
       </TextContainer>
 
-      <TextContainer>
+      <TextContainer data-test="go-home-btn">
         <strong>
           <p>Comprador</p>
         </strong>
-        <p>Nome: Letícia Chijo</p>
-        <p>CPF: 123.456.789-10</p>
+        <p>{username}</p>
+        <p>CPF: {cpf} </p>
       </TextContainer>
 
-      <button>Voltar para Home</button>
+     <Link data-test="go-home-btn" to="/"> <button>Voltar para Home</button></Link>
     </PageContainer>
   );
 }

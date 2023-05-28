@@ -36,11 +36,11 @@ export default function SessionsPage() {
   },[]);
 
   return (
-    <PageContainer>
+    <PageContainer data-test="movie-day" >
       Selecione o horário
       <div key="days">
         {sessions.map ((day) => (
-          <SessionContainer>
+          <SessionContainer data-test="showtime">
           {day.weekday} - {day.date}
           <ButtonsContainer>
           {day.showtimes.map(showtime => (
@@ -55,7 +55,7 @@ export default function SessionsPage() {
       <FooterContainer>
         <div>
           {}
-          <img
+          <img data-test="footer"
             src={poster} alt="poster"/></div>
         <div>
           <p>{titulo}</p>

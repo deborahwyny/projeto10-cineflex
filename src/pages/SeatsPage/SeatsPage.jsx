@@ -3,14 +3,17 @@ import axios from "axios";
 import { Link } from "react-router-dom";
 import { useParams } from 'react-router-dom';
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 
 
 
 
 
-export default function SeatsPage() {
+
+
+export default function SeatsPage({ setUsername, setcpf, setDate, setMovieTitle, setIds, setSessao}) {
   const { idSessao } = useParams();
   const [assentos, setAssentos] = useState([]);
   const [selecionado, setSelecionado] = useState([]);
@@ -58,19 +61,35 @@ function clicou(lugar){
    }
 
 }
+console.log(selecionado)
+console.log(setSessao)
 
 function envioDados(event){
-
+  setUsername(nome)
+    setcpf(cpf)
+    setDate(infos.day.weekday)
+    setMovieTitle(infos.movie.title)
+    setIds(selecionado.map((lugar) => lugar.name));
+    setSessao(infos.name);
+    
   const dadosReserva = {
     ids: selecionado.map((lugar) => lugar.id),
     name: nome,
-    name: nome,
+    cpf: cpf,
+  };
+
+  const filmes = {
+    titulo: infos.movie.title,
+    dia: infos.day.weekday,
+    sessao: infos.name
+    
   };
   
 
 		event.preventDefault()
-  const requisicao = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',dadosReserva )
-  requisicao.then(() => navigate("/sucesso"));
+  const requisicao = axios.post('https://mock-api.driven.com.br/api/v8/cineflex/seats/book-many',dadosReserva, filmes)
+    navigate("/sucesso", { state: { filmes, dadosReserva } });
+
   
 
 }
@@ -107,15 +126,15 @@ function envioDados(event){
       </CaptionContainer>
       <FormContainer onSubmit={envioDados}>
         Nome do Comprador:
-        <input type="nome" required value={nome} placeholder="Digite seu nome..." onChange={e => setNome(e.target.value)} />
+        <input data-test="client-name"  type="nome" required value={nome} placeholder="Digite seu nome..." onChange={e => setNome(e.target.value)} />
         CPF do Comprador:
-        <input type="cpf" required value={cpf} placeholder="Digite seu CPF..." onChange={e => setCpf(e.target.value)}/>
-        <button type="submit">Reservar Assento(s)</button>
+        <input data-test="client-cpf" type="cpf" required value={cpf} placeholder="Digite seu CPF..." onChange={e => setCpf(e.target.value)}/>
+        <button data-test="book-seat-btn" type="submit">Reservar Assento(s)</button>
       </FormContainer>
       <FooterContainer>
         <div>
         
-            <img
+            <img data-test="footer"
               src={infos.movie?.posterURL}
               alt="poster"
             />
